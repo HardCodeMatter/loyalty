@@ -1,0 +1,141 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <style>
+        .card-loyalty {
+            width: 300px;
+            border-radius: 10px;
+            padding: 30px 20px;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+            background-image: url('https://static.vecteezy.com/system/resources/previews/008/132/028/original/dark-gradient-background-free-vector.jpg');
+            background-size: cover;
+            background-position: center;
+            color: white;
+        }
+        
+        .card__header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .card__logo {
+            width: 60px;
+            height: 40px;
+        }
+        
+        .card__number {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .card__info {
+            display: flex;
+            justify-content: space-between;
+            font-size: 16px;
+        }
+        
+        .card__info__item {
+            display: flex;
+            flex-direction: column;
+            text-align: right;
+        }
+        
+        .card__info__label {
+            font-size: 12px;
+            color: #c9c9c9;
+            margin-bottom: 5px;
+        }
+        
+        .card__info__value {
+            font-size: 16px;
+            font-weight: bold;
+        }
+    </style>
+
+    <div class="container">
+        <div class="d-flex justify-content-center mt-3">
+            <div class="card-loyalty">
+                <div class="card__header">
+                    <span>LOYALTY CARD</span>
+                    <span class="fw-bold">STATUS</span>
+                </div>
+                
+                <div class="card__number">000 000 00{{ card.number }}</div>
+                
+                <div class="card__info">
+                    <div class="card__info__item">
+                        <div class="card__info__label">Cardholder Name</div>
+                        <div class="card__info__value">{{ card.owner }}</div>
+                    </div>
+                    <div class="card__info__item">
+                        <div class="card__info__label">Date Expired</div>
+                        <div class="card__info__value">{{ card.date_expired|date:"d/m/y" }}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="d-flex justify-content-center">
+            <div class="bg-white rounded p-3 mt-3" style="width: 600px;">
+                <dl class="row">
+                    <dt class="col-5">Card number</dt>
+                    <dd class="col-6">{{ card.number }}</dd>
+
+                    <dt class="col-5">Owner</dt>
+                    <dd class="col-6">{{ card.owner }}</dd>
+
+                    <dt class="col-5">Date released</dt>
+                    <dd class="col-6">{{ card.date_released|date:"d.m.y h:m" }}</dd>
+
+                    <dt class="col-5">Date expired</dt>
+                    <dd class="col-6">{{ card.date_expired|date:"d.m.y h:m" }}</dd>
+
+                    {% if not card.is_expired %}
+                        <dt class="col-5">Status</dt>
+                        <dd class="col-6">
+                            {% if card.is_activated %}
+                                <a href="">
+                                    Deactivate
+                                </a>
+                            {% else %}
+                                <a href="">
+                                    Activate
+                                </a>
+                            {% endif %}
+                        </dd>
+                    {% endif %}
+                            
+
+                    <div class="d-flex gap-2">
+                        {% if card.is_expired %}
+                            <button class="btn btn-sm btn-danger w-100">
+                                Expired
+                            </button>
+                        {% else %}
+                            {% if card.is_activated %}
+                                <button class="btn btn-sm btn-success w-100">
+                                    Activated
+                                </button>
+                            {% else %}
+                                <button class="btn btn-sm btn-secondary w-100">
+                                    Deactivated
+                                </button>
+                            {% endif %}
+                        {% endif %}
+
+                        <a href="" class="btn btn-sm btn-outline-danger w-100">Delete</a>
+                    </div>
+                </dl>
+            </div>
+        </div>
+
+        <div class="d-flex justify-content-center">
+            <div class="bg-white rounded p-3 mt-3" style="width: 600px;">
+                Card history
+            </div>
+        </div>
+    </div>
+{% endblock %}
