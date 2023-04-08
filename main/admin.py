@@ -31,12 +31,12 @@ class CardAdmin(admin.ModelAdmin):
 
 @admin.register(CardHistory)
 class CardHistoryAdmin(admin.ModelAdmin):
-    list_display = ('id', 'card', 'bonus', 'balance', 'date_used',)
-    list_filter = ('id', 'card', 'bonus', 'balance', 'date_used',)
+    list_display = ('id', 'card', 'label', 'bonus', 'balance', 'date_used',)
+    list_filter = ('id', 'card', 'label', 'bonus', 'balance', 'date_used',)
 
     fieldsets = [
         (None, {
-            'fields': ('card',),
+            'fields': ('card', 'label',),
         }),
         ('Date and time', {
             'fields': ('date_used',),
@@ -46,5 +46,5 @@ class CardHistoryAdmin(admin.ModelAdmin):
         }),
     ]
 
-    search_fields = ('id', 'card', 'bonus', 'balance', 'date_used',)
+    search_fields = ('id', 'card', 'label', 'bonus', 'balance', 'date_used',)
     ordering = ('-id',)

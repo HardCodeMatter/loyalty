@@ -7,4 +7,5 @@ urlpatterns = [
     path('', lambda req: redirect('card/')),
     path('card/', views.card_list_view, name='card_list'),
     path('card/<int:id>/', views.card_detail_view, name='card_detail'),
+    path('card/<int:id>/create/', views.card_history_create_view, name='card_history_create'),
 ]
