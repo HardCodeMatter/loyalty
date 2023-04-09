@@ -9,8 +9,8 @@ class CardHistoryInline(admin.StackedInline):
 
 @admin.register(Card)
 class CardAdmin(admin.ModelAdmin):
-    list_display = ('number', 'owner', 'date_released', 'date_expired', 'balance',)
-    list_filter = ('number', 'owner', 'date_released', 'date_expired', 'balance',)
+    list_display = ('number', 'owner', 'date_released', 'date_expired', 'balance', 'is_activated', 'is_expired',)
+    list_filter = ('number', 'owner', 'date_released', 'date_expired', 'balance', 'is_activated', 'is_expired',)
 
     fieldsets = [
         (None, {
@@ -24,7 +24,7 @@ class CardAdmin(admin.ModelAdmin):
         }),
     ]
 
-    search_fields = ('number', 'owner', 'date_released', 'date_expired', 'balance',)
+    search_fields = ('number', 'owner', 'date_released', 'date_expired', 'balance', 'is_activated', 'is_expired',)
     ordering = ('-id',)
     inlines = (CardHistoryInline,)
 

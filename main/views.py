@@ -60,3 +60,20 @@ def card_history_create_view(request: HttpResponse, id: int) -> HttpResponse:
     }
 
     return render(request, 'main/card_history_create.html', context)
+
+def card_delete_view(request: HttpResponse, id: int) -> None:
+    service = CardService()
+    service.delete_object(id)
+
+    return redirect(f'/card/')
+
+def card_toggle_status_view(request: HttpResponse, id: int) -> HttpResponse:
+    service = CardService()
+    card: Card = service.get_object_by_id(id)
+
+    if card.is_activated:
+        service.update_object(id, is_activated=False)
+    else:
+        service.update_object(id, is_activated=True)
+
+    return redirect(f'/card/{id}/')

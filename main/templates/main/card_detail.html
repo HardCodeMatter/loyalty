@@ -90,7 +90,7 @@
                     <dd class="col-6">{{ card.owner }}</dd>
 
                     <dt class="col-5">Balance</dt>
-                    <dd class="col-6">{{ card.balance|floatformat:"2g" }}</dd>
+                    <dd class="col-6">${{ card.balance|floatformat:"2g" }}</dd>
 
                     <dt class="col-5">Date released</dt>
                     <dd class="col-6">{{ card.date_released|date:"d.m.y h:m" }}</dd>
@@ -101,15 +101,13 @@
                     {% if not card.is_expired %}
                         <dt class="col-5">Status</dt>
                         <dd class="col-6">
-                            {% if card.is_activated %}
-                                <a href="">
+                            <a href="{% url 'card_toggle_status' card.id %}">
+                                {% if card.is_activated %}
                                     Deactivate
-                                </a>
-                            {% else %}
-                                <a href="">
+                                {% else %}
                                     Activate
-                                </a>
-                            {% endif %}
+                                {% endif %}
+                            </a>
                         </dd>
                     {% endif %}
                             
@@ -131,7 +129,7 @@
                             {% endif %}
                         {% endif %}
 
-                        <a href="" class="btn btn-sm btn-outline-danger w-100">Delete</a>
+                        <a href="{% url 'card_delete' card.id %}" class="btn btn-sm btn-outline-danger w-100">Delete</a>
                     </div>
                 </dl>
             </div>
