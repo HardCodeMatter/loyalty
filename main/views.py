@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect, HttpResponse
+from django.utils import timezone
 from .models import Card, CardHistory
 from .services import CardService, CardHistoryService
-from .forms import CardHistoryForm
+from .forms import CardFormSet, CardHistoryForm
 from typing import List
 
 
@@ -22,6 +23,11 @@ def card_detail_view(request: HttpResponse, id: int) -> HttpResponse:
     card_history_service = CardHistoryService()
     histories: List[CardHistory] = card_history_service.filter_object_by_id(card.pk)
 
+    if not card.is_expired and card.date_expired < timezone.now():
+        card_service.update_object(id, is_expired=True, is_activated=False)
+
+        return redirect(f'/card/{id}/')
+
     context = {
         'card': card,
         'histories': histories,
@@ -34,6 +40,9 @@ def card_history_create_view(request: HttpResponse, id: int) -> HttpResponse:
 
     card_service = CardService()
     card: Card = card_service.get_object_by_id(id)
+
+    if card.is_expired or not card.is_activated:
+        return redirect(f'/card/{id}/')
 
     if request.method == 'POST':
         form = CardHistoryForm(request.POST)
@@ -77,3 +86,27 @@ def card_toggle_status_view(request: HttpResponse, id: int) -> HttpResponse:
         service.update_object(id, is_activated=True)
 
     return redirect(f'/card/{id}/')
+
+def card_create_view(request: HttpResponse) -> HttpResponse:
+    if request.method == 'POST':
+        formset = CardFormSet(request.POST)
+        
+        if formset.is_valid():
+            for form in formset:
+                object = form.save(commit=False)
+                object.number = form.cleaned_data['number']
+                object.owner = form.cleaned_data['owner']
+                object.balance = 0
+                object.date_expired = form.cleaned_data['date_expired']
+                object.is_activated = form.cleaned_data['is_activated']
+                object.save()
+
+            return redirect(f'/card/')
+    else:
+        formset = CardFormSet()
+
+    context = {
+        'formset': formset,
+    }
+
+    return render(request, 'main/card_create.html', context)

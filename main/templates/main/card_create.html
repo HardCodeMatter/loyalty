@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+    <div class="d-flex justify-content-center">
+        <form method="post">
+            {% csrf_token %}
+            {{ formset.management_form }}
+
+            <div class="d-flex flex-column gap-3">
+                {% for form in formset %}
+                    <div>
+                        {{ form.number|as_crispy_field }}
+                        {{ form.owner|as_crispy_field }}
+                        {{ form.date_expired|as_crispy_field }}
+                        {{ form.is_activated|as_crispy_field }}
+                    </div>
+                {% endfor %}
+
+                <button class="btn btn-sm btn-primary" type="submit">Create</button>
+            </div>
+        </form>
+    </div>
+{% endblock %}
