@@ -65,7 +65,7 @@
                             <span class="fw-bold">STATUS</span>
                         </div>
                         
-                        <div class="card__number">000 000 00{{ card.number }}</div>
+                        <div class="card__number">{{ card.number|stringformat:"05d" }}</div>
                         
                         <div class="card__info">
                             <div class="card__info__item">

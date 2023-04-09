@@ -60,10 +60,12 @@
             <div class="card-loyalty">
                 <div class="card__header">
                     <span>LOYALTY CARD</span>
-                    <span class="fw-bold">STATUS</span>
+                    <span class="fw-bold">
+                        LIMITED
+                    </span>
                 </div>
                 
-                <div class="card__number">000 000 00{{ card.number }}</div>
+                <div class="card__number">{{ card.number|stringformat:"05g" }}</div>
                 
                 <div class="card__info">
                     <div class="card__info__item">
@@ -142,7 +144,15 @@
                         <div class="list-group-item">
                             <div class="d-flex justify-content-between">
                                 <div>{{ history.label }}</div>
-                                <div class="fw-bold text-success">+{{ history.bonus|floatformat:"2g" }}</div>
+                                {% if history.bonus >= 0 %}
+                                    <div class="fw-bold text-success">
+                                        +{{ history.bonus|floatformat:"2g" }}
+                                    </div>
+                                {% else %}
+                                    <div class="fw-bold text-danger">
+                                        {{ history.bonus|floatformat:"2g" }}
+                                    </div>
+                                {% endif %}
                             </div>
 
                             <div class="d-flex justify-content-between">
